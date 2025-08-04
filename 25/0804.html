@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cent 01 | for future me</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://poems.renj.top/renjfavicon.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font family for Inter */
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom font family for Cedarville Cursive */
+        .font-cedarville {
+            font-family: 'Cedarville Cursive', cursive;
+        }
+
+        /* Banner container with parallax effect */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3; /* Strictly 4:3 aspect ratio */
+            overflow: hidden;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            /* Parallax specific styles */
+            background-image: url('https://poems.renj.top/evermore/morephotos/archive.png'); /* Updated banner image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the parallax effect */
+        }
+
+        /* Banner navigation arrows - REMOVED, keeping the style block empty for now */
+        /*
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .banner-arrow:hover {
+            opacity: 1;
+        }
+
+        .banner-arrow.left {
+            left: 10px;
+        }
+
+        .banner-arrow.right {
+            right: 10px;
+        }
+        */
+
+        /* Lightbox styles for image enlargement */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox-image {
+            max-width: 800px; /* Fixed maximum width for enlarged images */
+            max-height: 600px; /* Fixed maximum height for enlarged images */
+            width: auto; /* Allow image to scale down if smaller than max-width */
+            height: auto; /* Allow image to scale down if smaller than max-height */
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation buttons for lightbox */
+        .lightbox-nav-btn {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            line-height: 1;
+            z-index: 1010;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-nav-btn.left {
+            left: -50px;
+        }
+
+        .lightbox-nav-btn.right {
+            right: -50px;
+        }
+
+        /* Close button for lightbox */
+        .lightbox-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 1010;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Responsive adjustments for lightbox buttons */
+        @media (max-width: 768px) {
+            .lightbox-nav-btn.left {
+                left: 10px;
+            }
+            .lightbox-nav-btn.right {
+                right: 10px;
+            }
+            .lightbox-content {
+                max-width: 90%;
+                max-height: 90%;
+            }
+            .lightbox-image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        /* Responsive iframe for the flipbook */
+        .responsive-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100) */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Text shadow for banner overlay text */
+        .banner-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Subtle shadow: horizontal-offset vertical-offset blur-radius color */
+        }
+
+        /* Buttons for Previous/Next Release */
+        .release-button {
+            background-color: rgba(51, 51, 51, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+            text-align: center; /* Center text within the button */
+            display: block; /* Ensure it takes full width of its grid cell */
+            width: 100%; /* Make button fill its grid column */
+        }
+
+        .release-button:hover {
+            background-color: rgba(51, 51, 51, 0.9);
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-inter min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-4xl w-full flex flex-col items-center space-y-8">
+
+        <main class="w-full flex flex-col items-center">
+            <div class="w-full max-w-sm sm:max-w-xl lg:max-w-2xl flex flex-col items-start space-y-6">
+
+                <!-- Main Banner (now with parallax background) -->
+                <div class="relative w-full pt-8 banner-container" id="banner-container">
+                    <!-- Navigation bar directly on top of the picture -->
+                    <nav class="absolute top-8 left-0 right-0 p-4 flex justify-around items-center text-white text-xs md:text-sm">
+                        <a href="https://renj.top/" class="hover:underline">renj</a>
+                        <a href="index.html" class="hover:underline">cents</a>
+            
+                    </nav>
+
+                    <!-- "lines unbent" title and release date -->
+                    <div class="absolute bottom-4 left-4 z-10 flex flex-col items-start">
+                        <h1 class="font-cedarville text-4xl md:text-6xl banner-text-shadow">
+                            for future me
+                        </h1>
+                        <em class="font-inter text-sm md:text-base italic banner-text-shadow">August 4, 2025</em>
+                    </div>
+                </div>
+
+                <!-- Short Introduction Text -->
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8"> <b>Subject: Maybe I’m Just Stoned (Again) at the Nail Salon </b><br> — A Retrospect</p>
+            <p>What a journey.<br>2022 me would've been surprised. I've been thinking of the 2022 version of me. All the magic, madness, heaven, sin; that failed flirting attempt on a Black Saturday vigil and playing Begin Again over and over again, or living Lorde's Supercut as my personality. Drinking Carly Rae Jepsen's Emotion juices, injecting Ashe's Love Is Not Enough and Always in my veins — what a time. Online class, Math B by Ma'am Weng being my favorite subject — the hyperbolas just scratched a part in my brain that I cannot explain. Trying to escape Arpan and MAPEH recitations. But who would have thought that I will graduate as top of my STEM class and start my college journey exactly a week from now in University of the Philippines, of all places.</p>
+            <p>A lot can change in three years, I see. I've been caught in my own web of lies and truths. I'm 18 now — legally an adult, mentally longing for boyhood. I've tried on relationships — or situationships as proper terms. 2022 me would've not have predicted that — consider me a torpe at that time. Now I'm quite the smooth talker. Would 2022 me even imagine me on TV — not as the news but as the one presenting the news? Quite a turn around on my road accident that year. All these got me thinking on Lorde's Stoned at the Nail Salon from her album Solar Power, the line where she says, "'Cause all the music you loved at sixteen, you'll grow out of // And all the times they will change, it'll all come around." I realized it's not about not loving those songs anymore; it's just that it doesn't reflect the you that was listening to those songs at those exact points in your life. You did not outgrow them — you just grew.</p>
+            <p>I guess "just" is a bold word choice for growing up. If it's anything — it's confusing: all facets of you all around the place. Year by year, the more Augusts that slip away, the more the rust on the door grows, the more the air gets saltier (yes, I've been listening to August a lot lately). It's just that probably I long for those specific music now not just because I love them but because I loved the me that once lived them. Because to be honest, Lorde was right: I grew out of them. I long not just for the songs I could pull out anytime, but for the me that experienced the musings that came to my head when I was banging my head for banging's sake three years ago — the boy who took an unflattering picture of himself because This Love (Taylor’s Version) just dropped on the week of his 15th birthday, or the boy who sang Tell Me Why on the way to the hospital after he got hit by a van. Much of me has changed, but much of me has also stayed the same, and the better part of me wants to stay the same. I kind of lived the life I wanted for myself three years ago — friends, family, and me: a version of me I have wished — to iron out the facets of me I've always questioned — sexuality, stance on politics, my image of me, my idea of me. But as much as I've reached them, life has got more complex, rough, and jaded. I'm in a state where I long for the 14/15-year-old me because I'm quite literally in my life's limbo (or the first one of them), on the doorway of adulthood — to navigate more, to stop just to start again.</p>
+            <p>In the same song Lorde says, "I'd ride and I'd ride on the carousel // 'Round and 'Round forever if I could // But it's time to cool it down // Whatever that means." Even if I'd try to escape into the fever dream of nostalgia — it would kill me. The roundabout will stop, the see-saw would not tip if I'm the only one — they would eventually stop. I literally have to cool it down, whatever that means. Adulthood has no guidebook. I have to grow up, whatever that means. The carousel — the carnival — had long been shut down, but I'm still hanging at the center waiting for the lights to even flicker a bit. No matter what I do, no matter how I vividly write those memories, I'll never be the same. But this is still me — the same boy who loved those songs, the same one who played OneBit Adventure unhealthily, the one who loved life in orange quite unhealthily. But no matter how I replay or reread those things, I still have to grow up. Escapism is no permanent escape — you're still stuck. And since you can never beat the system, you have to join in — jive on it.</p>
+            <p>Then the song ends, "I don’t know... // Maybe I’m just stoned at the nail salon again." There will come a time in my life, I'll miss this version of me — the 2025 version of me that was longing for the 2022 version of me (so probably see you in 2028). Because life will get even murkier. This BS statistics I'm taking resolves the career guidance fiasco I had in Grade 9, jumping from Pharmacy, to Teacher Education, to Engineering — because it all becomes murkier. I just know that somewhere in this timeline I have to iron things out because new pop-ups will devour my whole again. But that's life. I have to grow up — whatever that means. And I'll always be stuck — at the nail salon — thinking of the me's I could only think of because I've already lived them. A lot can change; you can't escape change. I am still half-baked — a man, a boy. I am becoming, and I'll always will be.</p>
+            <p>But I'm here.</p>
+            <p>I grew.</p>
+            <p>And maybe this is enough for now.<br>Write back in three years,</p>
+            <p>me</p>
+
+                <!-- Gallery Section -->
+                <h2 class="font-cedarville text-4xl mt-8">
+                    gallery
+                </h2>
+
+                <!-- Gallery Grid -->
+                <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8" id="gallery-grid">
+                  <img src="https://poems.renj.top/cycle%20ii/midnights/5.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
+                  <img src="https://poems.renj.top/cycle%20ii/midnights/4.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
+                  <img src="https://poems.renj.top/cycle%20ii/midnights/6.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
+                
+                </div>
+            </div>
+        </main>
+
+        <!-- Lightbox Overlay (Hidden by default) -->
+        <div class="lightbox-overlay" id="lightbox-overlay">
+            <div class="lightbox-content">
+                <img src="" alt="Enlarged Gallery Image" class="lightbox-image" id="lightbox-image">
+                <button class="lightbox-nav-btn left" id="lightbox-prev">&lt;</button>
+                <button class="lightbox-nav-btn right" id="lightbox-next">&gt;</button>
+                <button class="lightbox-close-btn" id="lightbox-close">&times;</button>
+            </div>
+        </div>
+
+        <!-- Footer - aligns with the max-w-sm content block -->
+        <footer class="w-full flex justify-between items-end text-xs md:text-sm mt-8 max-w-sm">
+            <div class="flex space-x-4">
+                <a href="https://www.instagram.com/renjmarkell/" class="hover:underline">INSTAGRAM</a>
+                <a href="https://web.facebook.com/marklawrencecaroro" class="hover:underline">FACEBOOK</a>
+            </div>
+            <div class="text-right flex items-center space-x-2">
+                <p>sibulan, <span id="current-time"></span></p>
+                <p>&copy; 2025</p>
+                <!-- Small logo in the footer -->
+                <img src="https://poems.renj.top/renjwhite.png"
+                     onerror="this.onerror=null; this.src='https://placehold.co/20x20/FFFFFF/000000?text=Logo';"
+                     alt="Renj Logo"
+                     class="h-5 w-auto">
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Function to update the time for the footer
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`;
+            document.getElementById('current-time').textContent = timeString;
+        }
+        updateTime(); // Initial call
+        setInterval(updateTime, 60000); // Update every minute
+
+        // --- Gallery Lightbox Logic ---
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightboxOverlay = document.getElementById('lightbox-overlay');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxCloseBtn = document.getElementById('lightbox-close');
+
+        let currentGalleryIndex = 0; // Tracks the currently displayed image in the lightbox
+
+        // Function to open the lightbox with a specific image
+        function openLightbox(index) {
+            currentGalleryIndex = index;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+            lightboxOverlay.classList.add('active'); // Show the lightbox
+            document.body.style.overflow = 'hidden'; // Prevent main page scrolling
+        }
+
+        // Function to close the lightbox
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active'); // Hide the lightbox
+            document.body.style.overflow = ''; // Restore main page scrolling
+        }
+
+        // Function to show the next image in the gallery
+        function showNextGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex + 1) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Function to show the previous image in the gallery
+        function showPrevGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Event listeners for each gallery item to open the lightbox
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => openLightbox(index));
+        });
+
+        // Event listeners for lightbox controls
+        lightboxCloseBtn.addEventListener('click', closeLightbox); // Close button click
+        lightboxOverlay.addEventListener('click', (e) => {
+            // Close lightbox only if clicking on the overlay itself, not the image or buttons
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+        lightboxPrevBtn.addEventListener('click', showPrevGalleryImage); // Previous button click
+        lightboxNextBtn.addEventListener('click', showNextGalleryImage); // Next button click
+
+        // Keyboard navigation for lightbox (Arrow keys and Escape)
+        document.addEventListener('keydown', (e) => {
+            if (lightboxOverlay.classList.contains('active')) {
+                if (e.key === 'ArrowRight') {
+                    showNextGalleryImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevGalleryImage();
+                } else if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
