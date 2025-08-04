@@ -185,15 +185,25 @@
             }
         }
 
-        /* Responsive iframe for the flipbook */
+        /* Responsive iframe for the flipbook and now YouTube */
         .responsive-iframe-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100) */
             height: 0;
             overflow: hidden;
             border-radius: 8px;
         }
+
+        /* Specific padding-bottom for 16:9 aspect ratio (YouTube) */
+        .responsive-iframe-container.youtube {
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9 / 16 * 100) */
+        }
+
+        /* Specific padding-bottom for 4:3 aspect ratio (Flipbook) */
+        .responsive-iframe-container.flipbook {
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100) */
+        }
+
 
         .responsive-iframe-container iframe {
             position: absolute;
@@ -272,11 +282,28 @@
 
                 <!-- Gallery Grid -->
                 <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8" id="gallery-grid">
-                  <img src="https://poems.renj.top/cycle%20ii/midnights/5.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
-                  <img src="https://poems.renj.top/cycle%20ii/midnights/4.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
-                  <img src="https://poems.renj.top/cycle%20ii/midnights/6.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
-                
+                    <img src="https://poems.renj.top/cycle%20ii/midnights/5.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
+                    <img src="https://poems.renj.top/cycle%20ii/midnights/4.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
+                    <img src="https://poems.renj.top/cycle%20ii/midnights/6.png" alt="Gallery Image" class="w-full aspect-square object-cover rounded-lg shadow-lg cursor-pointer gallery-item">
                 </div>
+
+                <!-- Song Section -->
+                <h2 class="font-cedarville text-4xl mt-8">
+                    song
+                </h2>
+
+                <!-- YouTube Video Embed -->
+                <div class="w-full responsive-iframe-container youtube mt-8">
+                    <iframe
+                        src="https://www.youtube.com/embed/V_A20lBsBMM"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
             </div>
         </main>
 
@@ -301,9 +328,9 @@
                 <p>&copy; 2025</p>
                 <!-- Small logo in the footer -->
                 <img src="https://poems.renj.top/renjwhite.png"
-                     onerror="this.onerror=null; this.src='https://placehold.co/20x20/FFFFFF/000000?text=Logo';"
-                     alt="Renj Logo"
-                     class="h-5 w-auto">
+                    onerror="this.onerror=null; this.src='https://placehold.co/20x20/FFFFFF/000000?text=Logo';"
+                    alt="Renj Logo"
+                    class="h-5 w-auto">
             </div>
         </footer>
     </div>
