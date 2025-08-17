@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cent 02 | on a busy street that feels so quiet</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://poems.renj.top/renjfavicon.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font family for Inter */
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom font family for Cedarville Cursive */
+        .font-cedarville {
+            font-family: 'Cedarville Cursive', cursive;
+        }
+
+        /* Banner container with parallax effect */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3; /* Strictly 4:3 aspect ratio */
+            overflow: hidden;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            /* Parallax specific styles */
+            background-image: url('https://cents.renj.top/photo/0805.jfif'); /* Updated banner image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the parallax effect */
+        }
+
+        /* Banner navigation arrows - REMOVED, keeping the style block empty for now */
+        /*
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .banner-arrow:hover {
+            opacity: 1;
+        }
+
+        .banner-arrow.left {
+            left: 10px;
+        }
+
+        .banner-arrow.right {
+            right: 10px;
+        }
+        */
+
+        /* Lightbox styles for image enlargement */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox-image {
+            max-width: 800px; /* Fixed maximum width for enlarged images */
+            max-height: 600px; /* Fixed maximum height for enlarged images */
+            width: auto; /* Allow image to scale down if smaller than max-width */
+            height: auto; /* Allow image to scale down if smaller than max-height */
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation buttons for lightbox */
+        .lightbox-nav-btn {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            line-height: 1;
+            z-index: 1010;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-nav-btn.left {
+            left: -50px;
+        }
+
+        .lightbox-nav-btn.right {
+            right: -50px;
+        }
+
+        /* Close button for lightbox */
+        .lightbox-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 1010;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Responsive adjustments for lightbox buttons */
+        @media (max-width: 768px) {
+            .lightbox-nav-btn.left {
+                left: 10px;
+            }
+            .lightbox-nav-btn.right {
+                right: 10px;
+            }
+            .lightbox-content {
+                max-width: 90%;
+                max-height: 90%;
+            }
+            .lightbox-image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        /* Responsive iframe for the flipbook and now YouTube */
+        .responsive-iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* Specific padding-bottom for 16:9 aspect ratio (YouTube) */
+        .responsive-iframe-container.youtube {
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9 / 16 * 100) */
+        }
+
+        /* Specific padding-bottom for 4:3 aspect ratio (Flipbook) */
+        .responsive-iframe-container.flipbook {
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100) */
+        }
+
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Text shadow for banner overlay text */
+        .banner-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Subtle shadow: horizontal-offset vertical-offset blur-radius color */
+        }
+
+        /* Buttons for Previous/Next Release */
+        .release-button {
+            background-color: rgba(51, 51, 51, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+            text-align: center; /* Center text within the button */
+            display: block; /* Ensure it takes full width of its grid cell */
+            width: 100%; /* Make button fill its grid column */
+        }
+
+        .release-button:hover {
+            background-color: rgba(51, 51, 51, 0.9);
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-inter min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-4xl w-full flex flex-col items-center space-y-8">
+
+        <main class="w-full flex flex-col items-center">
+            <div class="w-full max-w-sm sm:max-w-xl lg:max-w-2xl flex flex-col items-start space-y-6">
+
+                <!-- Main Banner (now with parallax background) -->
+                <div class="relative w-full pt-8 banner-container" id="banner-container">
+                    <!-- Navigation bar directly on top of the picture -->
+                    <nav class="absolute top-8 left-0 right-0 p-4 flex justify-around items-center text-white text-xs md:text-sm">
+                        <a href="https://cents.renj.top/" class="hover:underline">home</a>
+                    <a href="https://cents.renj.top/collection" class="hover:underline">cents</a>
+                    <a href="https://poems.renj.top/">poems</a>
+                    <a href="https://renj.top/" class="hover:underline">renj</a>
+                    </nav>
+
+                    <!-- "lines unbent" title and release date -->
+                    <div class="absolute bottom-4 left-4 z-10 flex flex-col items-start">
+                        <h1 class="font-cedarville text-4xl md:text-6xl banner-text-shadow">
+                            on a busy street that feels so quiet
+                        </h1>
+                        <em class="font-inter text-sm md:text-base italic banner-text-shadow">August 17, 2025</em>
+                    </div>
+                </div>
+
+                <!-- Short Introduction Text -->
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">It all begins tomorrow. My last cent entry talked about change, stepping into adulthood, written about two weeks ago. I'm here in Cebu; tomorrow starts the grueling days of statistical studies. I mean, technically, the academic year started last Monday, August 11, but the week was just festivities and Week of Welcome for us freshies.</p>
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">I moved in here last last Friday, August 8. It was a quiet Thursday night in Sibulan. My mother and I knew well that something was gonna change, but there were no dramatic farewells or something. We just talked about the same things that we used to, but in a way you realize that there is actually a sad and already longing undertone. The ship to Cebu from Dumaguete leaves at 12 a.m. Friday. I was with my father. The moment I stepped into the ship, looking at the city I grew up sleeping, and me standing on the deck pulled my heart out of my body. My heart still is in Dumaguete, beating. It is partly in Building 3 waiting for an easyride to Sibulan, another part in Sta. Monica Beach in Banilad watching the waves crash and dissolve. Part of it is still in Science High, laying on the building calling to those who can hear it; fragments scattered in Weshop, Unitop, Tops, Pantawan, and in Sibulan proper. But most of it is left at home.</p>
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">Settling in here was hard. Is hard. I haven't fully settled, and I don't think I ever will be. I'm out here on my own. Back when it was time for my father to finally leave me here, while I clutched the remaining 126 pesos in my hand to budget for the week, everything just felt so empty. Mind you, he left me Saturday, so basically he just slept here for a night, and now I'm on my own. This is a big city; the roads are always busy, but somehow it feels quiet. There are days that I don't eat rice at all — bread for breakfast, lunch, dinner — just to save up. Everything’s a struggle, everything wants to kill me, but I have to survive because I have to. But I can't promise that I'll thrive. The exact moment my father closed the door as he left, tears started streaming down my cheeks. I tried to stop them, but they just flowed like an ocean that won't hesitate to drown me. As Taylor Swift would say, <i>"I can go anywhere I want, anywhere I want, just not home."</i></p>
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">I have a circle of friends I left there in Dumaguete. I enter the University of the Philippines, of all places, a blank slate. Will I ever fit in here? At this moment, I don't think so. I even don't have the faculty to write coherently and effectively here, because I just feel so lost, and alone, and overwhelmed.</p>
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">I have a family I left there in Sibulan. My younger brother and his big teeth, saying the most random, brainrot slang their generation has. I miss my annoying cat and even the dog. My duyan sa likod, the mahogany trees, the CR, the bed, the table, the chairs, the roads, the home. Now, at the end of every day, who do I talk to? Who do I tell how my day has been? Who do I talk to when I spot something that I know my mother and I would only understand? How can I stand? I have cried a lot of times; right now I can't anymore — well, physically. Inside I'm torn, in pieces, and far from good. My tear ducts are now an empty well, but the thirst won't quench itself.</p>
+                <p class="text-justify text-sm md:text-base leading-relaxed mt-8">So it all begins tomorrow, but it had already begun August 8. I have a lot in my mind, but I lack the resources in me to write and express them. I'm just blank. Merely existing. Existing on a busy street that feels so quiet.</p>
+           
+                <!-- Gallery Section -->
+<h2 class="font-cedarville text-4xl mt-8">
+                    moving :(
+                </h2>
+
+                <!-- YouTube Video Embed -->
+                <div class="w-full responsive-iframe-container youtube mt-8">
+                    <iframe
+                        src="https://www.youtube.com/embed/OWbDJFtHl3w"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+              <div class="w-full responsive-iframe-container youtube mt-8">
+                    <iframe
+                        src="https://www.youtube.com/embed/maEVfpxDB8k"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+              
+
+                <!-- Song Section -->
+                
+
+            </div>
+        </main>
+
+        <!-- Lightbox Overlay (Hidden by default) -->
+        <div class="lightbox-overlay" id="lightbox-overlay">
+            <div class="lightbox-content">
+                <img src="" alt="Enlarged Gallery Image" class="lightbox-image" id="lightbox-image">
+                <button class="lightbox-nav-btn left" id="lightbox-prev">&lt;</button>
+                <button class="lightbox-nav-btn right" id="lightbox-next">&gt;</button>
+                <button class="lightbox-close-btn" id="lightbox-close">&times;</button>
+            </div>
+        </div>
+
+        <!-- Footer - aligns with the max-w-sm content block -->
+        <footer class="w-full flex justify-between items-end text-xs md:text-sm mt-8 max-w-sm sm:max-w-xl lg:max-w-2xl">
+            <div class="flex space-x-4">
+                <a href="https://www.instagram.com/renjmarkell/" class="hover:underline">INSTAGRAM</a>
+                <a href="https://www.facebook.com/marklawrencecaroro" class="hover:underline">FACEBOOK</a>
+            </div>
+            <div class="text-right flex items-center space-x-2">
+                <p>sibulan, <span id="current-time"></span></p>
+                <p>&copy; 2025</p>
+                <!-- Small logo in the footer -->
+                <img src="https://poems.renj.top/renjwhite.png"
+                    onerror="this.onerror=null; this.src='https://placehold.co/20x20/FFFFFF/000000?text=Logo';"
+                    alt="Renj Logo"
+                    class="h-5 w-auto">
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Function to update the time for the footer
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`;
+            document.getElementById('current-time').textContent = timeString;
+        }
+        updateTime(); // Initial call
+        setInterval(updateTime, 60000); // Update every minute
+
+        // --- Gallery Lightbox Logic ---
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightboxOverlay = document.getElementById('lightbox-overlay');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxCloseBtn = document.getElementById('lightbox-close');
+
+        let currentGalleryIndex = 0; // Tracks the currently displayed image in the lightbox
+
+        // Function to open the lightbox with a specific image
+        function openLightbox(index) {
+            currentGalleryIndex = index;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+            lightboxOverlay.classList.add('active'); // Show the lightbox
+            document.body.style.overflow = 'hidden'; // Prevent main page scrolling
+        }
+
+        // Function to close the lightbox
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active'); // Hide the lightbox
+            document.body.style.overflow = ''; // Restore main page scrolling
+        }
+
+        // Function to show the next image in the gallery
+        function showNextGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex + 1) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Function to show the previous image in the gallery
+        function showPrevGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Event listeners for each gallery item to open the lightbox
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => openLightbox(index));
+        });
+
+        // Event listeners for lightbox controls
+        lightboxCloseBtn.addEventListener('click', closeLightbox); // Close button click
+        lightboxOverlay.addEventListener('click', (e) => {
+            // Close lightbox only if clicking on the overlay itself, not the image or buttons
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+        lightboxPrevBtn.addEventListener('click', showPrevGalleryImage); // Previous button click
+        lightboxNextBtn.addEventListener('click', showNextGalleryImage); // Next button click
+
+        // Keyboard navigation for lightbox (Arrow keys and Escape)
+        document.addEventListener('keydown', (e) => {
+            if (lightboxOverlay.classList.contains('active')) {
+                if (e.key === 'ArrowRight') {
+                    showNextGalleryImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevGalleryImage();
+                } else if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
