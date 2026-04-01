@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cent 03 | dorothea, for good</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://poems.renj.top/renjfavicon.png">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font family for Inter */
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom font family for Cedarville Cursive */
+        .font-cedarville {
+            font-family: 'Cedarville Cursive', cursive;
+        }
+
+        /* Banner container with parallax effect */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3; /* Strictly 4:3 aspect ratio */
+            overflow: hidden;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            /* Parallax specific styles */
+            background-image: url('https://cents.renj.top/photo/Screenshot%20(414).png'); /* Updated banner image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the parallax effect */
+        }
+
+        /* Banner navigation arrows - REMOVED, keeping the style block empty for now */
+        /*
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .banner-arrow:hover {
+            opacity: 1;
+        }
+
+        .banner-arrow.left {
+            left: 10px;
+        }
+
+        .banner-arrow.right {
+            right: 10px;
+        }
+        */
+
+        /* Lightbox styles for image enlargement */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox-image {
+            max-width: 800px; /* Fixed maximum width for enlarged images */
+            max-height: 600px; /* Fixed maximum height for enlarged images */
+            width: auto; /* Allow image to scale down if smaller than max-width */
+            height: auto; /* Allow image to scale down if smaller than max-height */
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation buttons for lightbox */
+        .lightbox-nav-btn {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            line-height: 1;
+            z-index: 1010;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-nav-btn.left {
+            left: -50px;
+        }
+
+        .lightbox-nav-btn.right {
+            right: -50px;
+        }
+
+        /* Close button for lightbox */
+        .lightbox-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            z-index: 1010;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .lightbox-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Responsive adjustments for lightbox buttons */
+        @media (max-width: 768px) {
+            .lightbox-nav-btn.left {
+                left: 10px;
+            }
+            .lightbox-nav-btn.right {
+                right: 10px;
+            }
+            .lightbox-content {
+                max-width: 90%;
+                max-height: 90%;
+            }
+            .lightbox-image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        /* Responsive iframe for the flipbook and now YouTube */
+        .responsive-iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* Specific padding-bottom for 16:9 aspect ratio (YouTube) */
+        .responsive-iframe-container.youtube {
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9 / 16 * 100) */
+        }
+
+        /* Specific padding-bottom for 4:3 aspect ratio (Flipbook) */
+        .responsive-iframe-container.flipbook {
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100) */
+        }
+
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Text shadow for banner overlay text */
+        .banner-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Subtle shadow: horizontal-offset vertical-offset blur-radius color */
+        }
+
+        /* Buttons for Previous/Next Release */
+        .release-button {
+            background-color: rgba(51, 51, 51, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+            text-align: center; /* Center text within the button */
+            display: block; /* Ensure it takes full width of its grid cell */
+            width: 100%; /* Make button fill its grid column */
+        }
+
+        .release-button:hover {
+            background-color: rgba(51, 51, 51, 0.9);
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-inter min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-4xl w-full flex flex-col items-center space-y-8">
+
+        <main class="w-full flex flex-col items-center">
+            <div class="w-full max-w-sm sm:max-w-xl lg:max-w-2xl flex flex-col items-start space-y-6">
+
+                <!-- Main Banner (now with parallax background) -->
+                <div class="relative w-full pt-8 banner-container" id="banner-container">
+                    <!-- Navigation bar directly on top of the picture -->
+                    <nav class="absolute top-8 left-0 right-0 p-4 flex justify-around items-center text-white text-xs md:text-sm">
+                        <a href="https://cents.renj.top/" class="hover:underline">home</a>
+                    <a href="https://cents.renj.top/collection" class="hover:underline">cents</a>
+                    <a href="https://poems.renj.top/">poems</a>
+                    <a href="https://renj.top/" class="hover:underline">renj</a>
+                    </nav>
+
+                    <!-- "lines unbent" title and release date -->
+                    <div class="absolute bottom-4 left-4 z-10 flex flex-col items-start">
+                        <h1 class="font-cedarville text-4xl md:text-6xl banner-text-shadow">
+                            dorothea, for good
+                        </h1>
+                        <em class="font-inter text-sm md:text-base italic banner-text-shadow">April 1, 2026</em>
+                    </div>
+                </div>
+
+                <!-- Short Introduction Text -->
+              <p><em></em>Quick note, this would feel unpolished, because it is. Repetetive at times, but I made this in 20 minutes and have no plans of refining this so bye. </em></p>  
+              
+              <p>It's probably too late to come back to my side.</p>
+
+<p>It's almost a year now; sea of pink togas on my feed, medals and all that. Hues of gold sparkling in the glass eyes of graduates, long speeches about growing up, thanking family, and shouting friends out.</p>
+
+<p>I was in the same place last year. I wrote a long post myself; I even delivered my own speech in the ceremonies. I glance at the crowd, to everyone I know, to my family, to my favorite teachers, and to my left side looking for the laughing gazes of my friends. A lot smirked, too lost in the joy of laughing at me holding the unserious monster inside of me. Yet I glance at one person whom I thought would be the first to break her composure. But this time, she was still, she was blank, she wasn't looking at me.</p>
+
+<p>As I stepped down the stage, that's when it clicked to me: she wouldn't be part of my long post tonight, she's long gone. We were singing our songs, took pictures with our batchmates—probably the last time I'll ever see some of them again. And in the scuffle of the crowd, I see her with her own set of friends, as I can say, while I was bittersweetly smiling at her while I was posing with my own friends.</p>
+
+<p>No one would probably expect that I imagined her to be the one that will spam her face beside me in graduation photos; well, maybe they actually do or did. Perhaps six years of friendship can be brutal, and it was. Too honest, too young, growing and turning, trying and failing, and coming of age. But a twelve-year-old wouldn't think of that. He'll think about fitting in a school full of intellectuals; he had seen these faces beat him in division-level contests before. His seatmates will be those podium finishers and he's the one second to the last—at least he wasn't last. He will scan the room, identify the faces, and try to find a match. As the case goes for these first few weeks of high school, your first cliques will not last a day.</p>
+
+<p>The school had this acquaintance party. Acquaintance party, huh; we basically knew each other's names and the elementaries we graduated and which contests they won gold. This party won't make sense at all, yet I joined. I had fear of missing out then. And actually, I got acquainted with my own classmates and this girl sitting at the row behind mine in class. I guess the link wasn't weak; we made fun of someone—bad, I know. Then on, that became our pastime. I'd near her at breaks and talk about what who and who just said, until it became about sharing answers, until it became covering up for each other's crimes. I did not expect that I actually found my spot here. And then on we started a circle of our own; there were four of us. But one cannot deny that we appear closer to each other than to the other two, but to the other two, you know I love you!</p>
+
+<p>Then the circle rested; it became dormant. For some reason that up until now I do not know, we stopped talking. COVID lockdown came; we never talked. People were dying outside; we never talked. But then we did again, on a random night after online classes, we apologized to each other, and not in the most conventional way. I posted on my Facebook this UFC Gravy ad that we would sing during our face-to-face classes before; I mentioned her in the comments and there then we made up.</p>
+
+<p>They say the strongest bond had to be broken first before they can be reinforced for good. That was the belief I had held on to at that time: that the more rough the road, the better the destination will be. We did. She knew of my romantic aspirations—wild choice of words, I know. I knew of hers too. Teenage romantic experimentation, outbursts, and many more. We shared playlists, videos, and TikToks. Heck, we even acted out as a couple publicly online because we were so upset with the states our dating life had at that time. It was high school; everyone should have their partners.</p>
+
+<p>2022, face-to-face classes came back. We're in tenth grade now. We were seatmates because of course. The usuals came back: random songs, streaming Taylor Swift and Ariana Grande, buying illegal Spotify accounts on Twitter. Good days, good days. In the same year, we "expanded" the network; our four-member circle became eleven or ten—I do not feel like rechecking right now. But of course, we would stick back to our own little in-groups. We would pair up for everything that we could possibly be and for the most part it worked.</p>
+
+<p>Christmas break comes, the cold continuation of the school year in January. Then there, she meets her what would become then his boyfriend; now I had to step out a bit. I had a network after all. After all, I had other friends; I had another best friend with a very tumultuous relation which will probably have her own entry here soon. But back to the main topic, she was practically married to the guy. But we remained friends then; we still talked every day. Still close in fact that I was accused by others to be a third party. I wouldn't blame them; after all, if I wanted to, I would have a full log of their fights and the reasons for each. I had my share of tribulations too personally that time; she knew, she's the only one who knew.</p>
+
+<p>The first time she got drunk was with me. She was crying about a past fling that I know of. Her boyfriend was with us that time. It was supposed to be a project sleepover; the owner of the house did not know what was happening. I'd posit that the guy was hurt after hearing her girl cry over a fling. So he tattled on us; lo and behold, the owner of the house was one of the ten/eleven member friend group. I am having a hard time censoring names and groups here; God help me. The owner and I deserve another entry too. At this point, I have made myself put two more entries as writing this one. And with that revelation of the tattler, of course there will be some true distance now.</p>
+
+<p>Senior high came for us. We were in different sections. I opened my arms in the remaining two years; academics were a sideline for me, contests occupied me, trips occupied me—as long as I am a high honor, I continued my strange odyssey of sidelines. She was coping too; she had personal problems that I knew, the difference now is just the amount of detail I have of. She would still talk to me, ask me, come to me especially when they are in a fight with her guy. We were sixteen-year-olds then, lot of hormonal changes leading to erratic outbursts and behaviors. There I saw the cracks in the person that I trusted to share mine. Questionable practices, alcohol being one of them. I tried to understand her, truly; given her problems, I saw it as her lifeline. We had different lifelines at all. We slowly drifted farther and farther.</p>
+
+<p>We never had a fight. But we weren't talking every day anymore. She would have late-night appointments; I was with my new niche. The gap became wider; by this time, I felt like I was everywhere now: a journalist, a director, and more. There were traumatic happenings there; I wouldn't detail much of it here.</p>
+
+<p>We arrive at the final year. Remember that ten/eleven wide group? That was imploding. We were so invincible from outside that the weight collapsed within. There grew factions and fights, and for some reason she attacked us for not weighing in on a fight that wasn't ours. That had me stepping back even more, widening the gaps between. The gap became wider day by day; for some reason vitriol wrapped the lilies we tended to every night. Words were said behind backs. Who would've thought that the anchor that we even talked to each other in the first place is breaking us right now? Since we were classmates in my senior year, we had to be cordial. Going in the classroom every day felt like a Hollywood red carpet where you would kiss Judas' cheeks for the paparazzi. There were a lot of eyes on.</p>
+
+<p>But come to think of it, we never fought. This was mendable. There was still a path connecting the two of us bridging the gap; the issue was it was just as thin as a thread.</p>
+
+<p>I always loved evermore; it's my favorite album of all time. "dorothea" is a song about those friends we never talk to anymore. Nothing actually dramatic happened between you two but you just never talked again. The friendship is in the purgatory but the characters are in their own heavens. But one could always come back to another's side. So I still held on that thread to connect us back together maybe someday in the future, when this silent treatment will be like the first one we had before. Unexplained but changed us to be better. I hold on to the belief I had: rough roads lead to the best destination. This is just a rough patch. But funnily enough, I wasn't that attached or fixated to have this fixed. It felt like this purgatory could last a lifetime and I wouldn't mind. So complete the line: In the greatest of pressures, diamonds are created. Yet under the same pressure, implosions are also created.</p>
+
+<p>And we come back to the graduation sea of pink. A bittersweet smile I form, a last look that will truly be the last. Maybe it is already too late to come back to my side. All stories have to end; others get their fairy tale endings, others get an explosive climax, but others get an open-ended one. It is finished, buried, gone. But it's also a story that will forever leave questions. It will haunt me, but it would be the least of my worries. I am in college, I am becoming a man, I am growing, and hopefully she also is. For the better and for good. Who thought Ariana would close her arc here with "For Good" too; our orbits crashed, I just don't know what happened. Was that crash six years ago one beautiful meteor shower? Or was that crash the clash of the biggest stars and caused a black hole to form? I will never know; I want answers but at the same time I don't. But at this point, I don't care anymore.</p>
+
+<p>Perhaps in the moments that I knew her, the moments that she knew me, she was able to build and become who she always wanted to be. The stream will always run regardless of the boulders the waters bump onto. I have fulfilled my part in her prophecy, and so did she in mine. If one day she'll be on TV accepting awards, I'd probably clap than laugh at her. What will her reaction be if it was instead me is none of my wonders.</p>
+
+<p>Perhaps you would ask that if I really did not care, why did I write this whole entry. I needed to parse out myself, to fully let go, to fully let that rest in purgatory. Everyone is on thin ice with their Dorotheas, but mine had already snapped and that is okay; we change, we become.</p>
+
+<p>And so it truly comes to end, I do hope everything works out the best for us.</p>
+
+<br>
+Sincerely,<br>
+Renj
+
+                <!-- Gallery Section -->
+<h2 class="font-cedarville text-4xl mt-8">
+                    songs songs songs
+                </h2>
+
+                <!-- YouTube Video Embed -->
+                <div class="w-full responsive-iframe-container youtube mt-8">
+                    <iframe
+                        src="https://www.youtube.com/embed/zI4DS5GmQWE"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+               <div class="w-full responsive-iframe-container youtube mt-8">
+                    <iframe
+                        src="https://www.youtube.com/embed/MTHxAzSYBDc"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+                
+
+                <!-- Song Section -->
+                
+
+            </div>
+        </main>
+
+        <!-- Lightbox Overlay (Hidden by default) -->
+        <div class="lightbox-overlay" id="lightbox-overlay">
+            <div class="lightbox-content">
+                <img src="" alt="Enlarged Gallery Image" class="lightbox-image" id="lightbox-image">
+                <button class="lightbox-nav-btn left" id="lightbox-prev">&lt;</button>
+                <button class="lightbox-nav-btn right" id="lightbox-next">&gt;</button>
+                <button class="lightbox-close-btn" id="lightbox-close">&times;</button>
+            </div>
+        </div>
+
+        <!-- Footer - aligns with the max-w-sm content block -->
+        <footer class="w-full flex justify-between items-end text-xs md:text-sm mt-8 max-w-sm sm:max-w-xl lg:max-w-2xl">
+            <div class="flex space-x-4">
+                <a href="https://www.instagram.com/renjmarkell/" class="hover:underline">INSTAGRAM</a>
+                <a href="https://www.facebook.com/marklawrencecaroro" class="hover:underline">FACEBOOK</a>
+            </div>
+            <div class="text-right flex items-center space-x-2">
+                <p>sibulan, <span id="current-time"></span></p>
+                <p>&copy; 2025</p>
+                <!-- Small logo in the footer -->
+                <img src="https://poems.renj.top/renjwhite.png"
+                    onerror="this.onerror=null; this.src='https://placehold.co/20x20/FFFFFF/000000?text=Logo';"
+                    alt="Renj Logo"
+                    class="h-5 w-auto">
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Function to update the time for the footer
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`;
+            document.getElementById('current-time').textContent = timeString;
+        }
+        updateTime(); // Initial call
+        setInterval(updateTime, 60000); // Update every minute
+
+        // --- Gallery Lightbox Logic ---
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightboxOverlay = document.getElementById('lightbox-overlay');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxCloseBtn = document.getElementById('lightbox-close');
+
+        let currentGalleryIndex = 0; // Tracks the currently displayed image in the lightbox
+
+        // Function to open the lightbox with a specific image
+        function openLightbox(index) {
+            currentGalleryIndex = index;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+            lightboxOverlay.classList.add('active'); // Show the lightbox
+            document.body.style.overflow = 'hidden'; // Prevent main page scrolling
+        }
+
+        // Function to close the lightbox
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active'); // Hide the lightbox
+            document.body.style.overflow = ''; // Restore main page scrolling
+        }
+
+        // Function to show the next image in the gallery
+        function showNextGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex + 1) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Function to show the previous image in the gallery
+        function showPrevGalleryImage() {
+            currentGalleryIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+            lightboxImage.src = galleryItems[currentGalleryIndex].src;
+            lightboxImage.alt = galleryItems[currentGalleryIndex].alt;
+        }
+
+        // Event listeners for each gallery item to open the lightbox
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => openLightbox(index));
+        });
+
+        // Event listeners for lightbox controls
+        lightboxCloseBtn.addEventListener('click', closeLightbox); // Close button click
+        lightboxOverlay.addEventListener('click', (e) => {
+            // Close lightbox only if clicking on the overlay itself, not the image or buttons
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+        lightboxPrevBtn.addEventListener('click', showPrevGalleryImage); // Previous button click
+        lightboxNextBtn.addEventListener('click', showNextGalleryImage); // Next button click
+
+        // Keyboard navigation for lightbox (Arrow keys and Escape)
+        document.addEventListener('keydown', (e) => {
+            if (lightboxOverlay.classList.contains('active')) {
+                if (e.key === 'ArrowRight') {
+                    showNextGalleryImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevGalleryImage();
+                } else if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
